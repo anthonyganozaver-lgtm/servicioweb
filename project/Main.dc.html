@@ -1,0 +1,1213 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Atenea Seguros — Sitio web</title>
+<script src="./support.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  html{scroll-behavior:smooth}
+  body{margin:0}
+  *{box-sizing:border-box}
+  a{text-decoration:none;color:inherit}
+  button{font-family:inherit;cursor:pointer}
+  input,select,textarea{font-family:inherit}
+  ::selection{background:#0FB9B1;color:#fff}
+  @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.5)}}
+  @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes driftFade{0%,100%{opacity:.18}50%{opacity:.5}}
+  @keyframes spinSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  @keyframes ringPulse{0%{transform:scale(.85);opacity:.55}100%{transform:scale(1.55);opacity:0}}
+  @keyframes logoScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .logo-marquee-track{animation:logoScroll 20s linear infinite}
+  .logo-marquee:hover .logo-marquee-track{animation-play-state:paused}
+
+  .shield-badge{position:relative;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+  .shield-badge:hover{transform:scale(1.1) rotate(-4deg)}
+  .shield-ring{position:absolute;inset:-6px;border-radius:999px;border:1.5px solid var(--accent);opacity:0}
+  .shield-badge:hover .shield-ring{opacity:1;animation:ringPulse 1s ease-out infinite}
+
+  .benefit-item{position:relative;cursor:default}
+  .benefit-check{display:inline-flex;opacity:0;transform:scale(.3) rotate(-40deg);transition:all .3s cubic-bezier(.34,1.56,.64,1);margin-left:6px;vertical-align:middle}
+  .benefit-item:hover .benefit-check{opacity:1;transform:scale(1) rotate(0deg)}
+  .benefit-item:hover{color:var(--primary) !important}
+
+  .progress-track{height:6px;border-radius:999px;background:var(--border);overflow:hidden}
+  .progress-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .45s cubic-bezier(.34,1.2,.64,1)}
+</style>
+</helmet>
+
+<div style="{{rootStyle}}">
+
+<!-- ============ HEADER ============ -->
+<header style="position:sticky;top:0;z-index:50;background:var(--nav-bg);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)">
+  <div style="max-width:1280px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <a href="#inicio" aria-label="Atenea Seguros — Inicio" style="display:flex;align-items:center;gap:10px">
+      <svg width="34" height="34" viewBox="0 0 100 100" aria-hidden="true">
+        <defs>
+          <linearGradient id="goldHead" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#E7C878"></stop>
+            <stop offset="1" stop-color="#B4860B"></stop>
+          </linearGradient>
+        </defs>
+        <polygon points="50,6 26,94 40,94 52,46" fill="{{logoInk}}"></polygon>
+        <polygon points="50,6 74,94 60,94 48,46" fill="{{logoInk}}"></polygon>
+        <path d="M18,54 Q50,24 82,54" stroke="url(#goldHead)" stroke-width="7" fill="none" stroke-linecap="round"></path>
+      </svg>
+      <span style="font-family:'Sora',sans-serif;font-weight:800;font-size:19px;letter-spacing:.5px;color:var(--text)">ATENEA <span style="color:var(--primary)">SEGUROS</span></span>
+    </a>
+
+    <nav aria-label="Navegación principal" style="display:flex;gap:28px;font-family:'Manrope',sans-serif;font-weight:600;font-size:14.5px;color:var(--text)">
+      <a href="#inicio">Inicio</a>
+      <a href="#seguros">Seguros</a>
+      <a href="#nosotros">Nosotros</a>
+      <a href="#galeria">Galería</a>
+      <a href="#testimonios">Testimonios</a>
+      <a href="#faq">Preguntas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div style="display:flex;align-items:center;gap:12px">
+      <button onClick="{{toggleDark}}" aria-label="Cambiar a modo oscuro o claro" style="width:40px;height:40px;border-radius:999px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;color:var(--text)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{themeIconPath}}"></path></svg>
+      </button>
+      <a href="{{navWaHref}}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;background:var(--accent);color:#04302D;font-weight:700;font-size:14px;padding:10px 18px;border-radius:999px;box-shadow:var(--shadow)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.7 14.3c-.2.7-1.4 1.4-2 1.5-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-5-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5.2.5.8 1.9.9 2 .1.2.1.4 0 .6-.1.2-.2.4-.4.6-.2.2-.4.4-.5.6-.2.2-.4.4-.2.8.2.4 1 1.6 2.1 2.6 1.4 1.3 2.6 1.7 3 1.9.4.2.6.1.8-.1.2-.2.9-1 1.1-1.4.2-.4.5-.3.8-.2.3.1 1.9.9 2.2 1 .3.2.5.2.6.4.1.2.1.9-.1 1.6Z"></path></svg>
+        Cotiza ahora
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO / INICIO ============ -->
+<section id="inicio" style="position:relative">
+  <div style="position:relative;min-height:640px;display:flex;align-items:center;padding:96px 32px 64px">
+    <img src="/_blob/e5c38a683a9148357b6a4da374c14135" alt="Familia peruana protegida por Atenea Seguros" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:32% 44%">
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,14,29,.88) 0%,rgba(31,63,214,.6) 26%,rgba(31,63,214,.18) 50%,rgba(15,185,177,.15) 68%,rgba(9,14,29,.42) 100%)"></div>
+
+    <button onClick="{{heroPrev}}" aria-label="Diapositiva anterior" style="position:absolute;top:50%;left:18px;transform:translateY(-50%);width:42px;height:42px;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.35);color:#fff;display:flex;align-items:center;justify-content:center;z-index:2">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"></path></svg>
+    </button>
+    <button onClick="{{heroNext}}" aria-label="Siguiente diapositiva" style="position:absolute;top:50%;right:18px;transform:translateY(-50%);width:42px;height:42px;border-radius:999px;background:rgba(255,255,255,.16);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.35);color:#fff;display:flex;align-items:center;justify-content:center;z-index:2">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+    </button>
+
+    <div style="max-width:1280px;margin:0 auto;position:relative;display:grid;grid-template-columns:1.4fr .82fr;gap:44px;align-items:center;width:100%;z-index:1">
+    <div>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);backdrop-filter:blur(4px);color:#fff;font-weight:700;font-size:12px;letter-spacing:1.2px;padding:8px 14px;border-radius:999px;margin-bottom:20px">
+        <span style="width:7px;height:7px;border-radius:999px;background:var(--accent);animation:pulseDot 2s ease-in-out infinite"></span>
+        CORREDORES DE SEGUROS AUTORIZADOS
+      </div>
+
+      <sc-for list="{{slides}}" as="s" hint-placeholder-count="3">
+        <div style="{{s.wrapStyle}}">
+          <h1 style="font-family:'Sora',sans-serif;font-weight:800;font-size:37px;line-height:1.16;letter-spacing:-.4px;margin:0 0 14px;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.25)">{{s.headline}}</h1>
+          <p style="font-size:15px;line-height:1.55;color:rgba(255,255,255,.88);max-width:440px;margin:0 0 26px">{{s.sub}}</p>
+        </div>
+      </sc-for>
+
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:28px">
+        <a href="{{heroWaHref}}" target="_blank" rel="noopener" style="background:var(--primary);color:#fff;font-weight:700;font-size:14.5px;padding:14px 24px;border-radius:12px;box-shadow:0 14px 30px rgba(9,14,29,.35);display:inline-flex;align-items:center;gap:10px">
+          Cotiza en 2 minutos
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+        <a href="#seguros" style="border:1.5px solid rgba(255,255,255,.55);color:#fff;font-weight:700;font-size:14.5px;padding:14px 24px;border-radius:12px;background:rgba(255,255,255,.08);backdrop-filter:blur(4px)">Ver seguros</a>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-bottom:24px">
+        <sc-for list="{{slides}}" as="s2" hint-placeholder-count="3">
+          <button onClick="{{s2.pick}}" aria-label="Ver diapositiva" style="{{s2.dotStyle}}"></button>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <sc-for list="{{digitalBadges}}" as="db" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.25);padding:7px 14px 7px 7px;border-radius:999px">
+            <span class="shield-badge" style="position:relative;display:inline-flex;width:28px;height:28px;border-radius:999px;background:rgba(255,255,255,.18);align-items:center;justify-content:center;flex-shrink:0">
+              <span class="shield-ring"></span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{db.iconPath}}"></path></svg>
+            </span>
+            <span style="font-size:11.5px;font-weight:700;color:#fff">{{db.label}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="position:relative">
+      <div style="position:relative;border-radius:22px;padding:2px;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:0 24px 60px rgba(0,0,0,.35)">
+        <div style="position:absolute;top:-14px;right:26px;background:var(--bg-alt);color:var(--primary);font-weight:800;font-size:11.5px;padding:7px 14px;border-radius:999px;display:flex;align-items:center;gap:6px;box-shadow:var(--shadow)">
+          <span style="width:6px;height:6px;border-radius:999px;background:var(--accent);animation:pulseDot 1.8s ease-in-out infinite"></span>
+          EN LÍNEA AHORA
+        </div>
+        <div style="background:var(--surface);border-radius:20px;padding:26px 28px">
+          <div style="margin-bottom:18px">
+            <span style="font-family:'Sora',sans-serif;font-weight:800;font-size:17px;color:var(--text)">Cotiza y protégete al instante</span>
+          </div>
+
+          <label style="display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:6px">Tipo de seguro</label>
+          <div style="position:relative;margin-bottom:16px">
+            <select onChange="{{handleQuickType}}" value="{{quickType}}" style="width:100%;padding:13px 40px 13px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14.5px;appearance:none">
+              <option value="vida">Seguro de Vida</option>
+              <option value="salud">Seguro de Salud</option>
+              <option value="eps">EPS (Entidad Prestadora de Salud)</option>
+              <option value="vehicular">Seguro Vehicular / SOAT</option>
+              <option value="hogar">Seguro de Hogar</option>
+              <option value="viaje">Seguro de Viaje</option>
+              <option value="empresarial">Seguro Empresarial / PYME</option>
+              <option value="sctr">SCTR</option>
+              <option value="vidaley">Vida Ley</option>
+              <option value="cartafianza">Carta Fianza</option>
+            </select>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;top:50%;right:14px;transform:translateY(-50%);pointer-events:none"><path d="M6 9l6 6 6-6"></path></svg>
+          </div>
+
+          <label style="display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:6px">Nombre completo</label>
+          <input type="text" placeholder="Escribe tu nombre" value="{{quickName}}" onChange="{{handleQuickName}}" style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14.5px;margin-bottom:16px">
+
+          <label style="display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:6px">DNI</label>
+          <input type="text" inputmode="numeric" maxlength="8" placeholder="12345678" value="{{quickDni}}" onChange="{{handleQuickDni}}" style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14.5px;margin-bottom:16px">
+
+          <label style="display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:6px">WhatsApp / Celular</label>
+          <input type="tel" placeholder="999 999 999" value="{{quickPhone}}" onChange="{{handleQuickPhone}}" style="width:100%;padding:13px 14px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14.5px;margin-bottom:14px">
+
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px">
+            <span>Progreso del formulario</span><span>{{quickProgressLabel}}</span>
+          </div>
+          <div class="progress-track" style="margin-bottom:22px">
+            <div class="progress-fill" style="width:{{quickProgressPct}}%"></div>
+          </div>
+
+          <a href="{{quickWaHref}}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--accent);color:#04302D;font-weight:800;font-size:15px;padding:15px;border-radius:12px">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.7 14.3c-.2.7-1.4 1.4-2 1.5-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-5-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5.2.5.8 1.9.9 2 .1.2.1.4 0 .6-.1.2-.2.4-.4.6-.2.2-.4.4-.5.6-.2.2-.4.4-.2.8.2.4 1 1.6 2.1 2.6 1.4 1.3 2.6 1.7 3 1.9.4.2.6.1.8-.1.2-.2.9-1 1.1-1.4.2-.4.5-.3.8-.2.3.1 1.9.9 2.2 1 .3.2.5.2.6.4.1.2.1.9-.1 1.6Z"></path></svg>
+            Enviar por WhatsApp
+          </a>
+          <p style="text-align:center;font-size:11.5px;color:var(--muted);margin:12px 0 0">Sin costo · Respuesta en menos de 1 hora hábil</p>
+        </div>
+      </div>
+
+      <div style="position:absolute;bottom:-22px;left:-22px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 18px;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;animation:floatY 4s ease-in-out infinite">
+        <span class="shield-badge" style="position:relative;display:inline-flex">
+          <span class="shield-ring"></span>
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 3 7v6c0 5 4 8.5 9 9 5-.5 9-4 9-9V7l-9-5Z"></path><path d="M9 12l2 2 4-4"></path></svg>
+        </span>
+        <div>
+          <div style="font-size:12.5px;font-weight:800;color:var(--text)">Supervisado por la SBS</div>
+          <div style="font-size:11px;color:var(--muted)">Corredor autorizado</div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEGUROS ============ -->
+
+
+<!-- ============ NOSOTROS ============ -->
+<section id="seguros" style="padding:104px 32px">
+  <div style="max-width:1280px;margin:0 auto">
+    <div style="text-align:center;max-width:620px;margin:0 auto 48px">
+      <div style="color:var(--accent);font-weight:800;font-size:12.5px;letter-spacing:1.4px;margin-bottom:12px">NUESTRA COBERTURA</div>
+      <h2 style="font-family:'Sora',sans-serif;font-weight:800;font-size:34px;letter-spacing:-.4px;color:var(--text);margin:0 0 14px">Un seguro para cada etapa de tu historia</h2>
+      <p style="font-size:16px;color:var(--muted);line-height:1.6;margin:0 0 32px">Elige la cobertura que necesitas y descubre los beneficios pensados para ti.</p>
+
+      <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap">
+        <button onClick="{{selectGroupFamilia}}" style="{{groupStyleFamilia}}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 8.6c0 4.4-4.4 7.6-8.8 11.4C7.6 16.2 3.2 13 3.2 8.6a4.6 4.6 0 0 1 8.8-1.8 4.6 4.6 0 0 1 8.8 1.8Z"></path></svg>
+          Para tu Familia
+        </button>
+        <button onClick="{{selectGroupEmpresa}}" style="{{groupStyleEmpresa}}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="12" rx="1.5"></rect><path d="M8.5 8V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v2"></path></svg>
+          Para tu Empresa
+        </button>
+        <button onClick="{{selectGroupSctr}}" style="{{groupStyleSctr}}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 0 1 16 0"></path><path d="M2 16h20"></path><path d="M12 8v3"></path></svg>
+          SCTR
+        </button>
+      </div>
+    </div>
+
+    <sc-if value="{{groupPicked}}" hint-placeholder-val="{{true}}">
+    <div style="display:grid;grid-template-columns:220px 1fr;gap:36px;align-items:start;margin-bottom:44px">
+
+      <div style="display:flex;flex-direction:column;gap:4px;position:sticky;top:96px">
+        <sc-if value="{{showSalud}}" hint-placeholder-val="{{true}}">
+        <button onClick="{{selectSalud}}" style="{{menuStyleSalud}}">
+          <span style="{{menuIconSalud}}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"></circle><path d="M12 7.5v9M7.5 12h9"></path></svg></span>
+          Salud
+        </button>
+        </sc-if>
+        <sc-if value="{{showVehicular}}" hint-placeholder-val="{{true}}">
+        <button onClick="{{selectVehicular}}" style="{{menuStyleVehicular}}">
+          <span style="{{menuIconVehicular}}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V11l2.4-5h11.2L20 11v5"></path><path d="M4 16h16v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H7v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3Z"></path><circle cx="7.5" cy="16" r="1.4"></circle><circle cx="16.5" cy="16" r="1.4"></circle></svg></span>
+          Vehicular
+        </button>
+        </sc-if>
+        <sc-if value="{{showHogar}}" hint-placeholder-val="{{true}}">
+        <button onClick="{{selectHogar}}" style="{{menuStyleHogar}}">
+          <span style="{{menuIconHogar}}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4l8 7.5"></path><path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9"></path><path d="M10 20v-5h4v5"></path></svg></span>
+          Hogar
+        </button>
+        </sc-if>
+        <sc-if value="{{showViaje}}" hint-placeholder-val="{{true}}">
+        <button onClick="{{selectViaje}}" style="{{menuStyleViaje}}">
+          <span style="{{menuIconViaje}}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 4 3 11l6.5 2.5L12 20l3-6.5L21 4Z"></path></svg></span>
+          Viaje
+        </button>
+        </sc-if>
+        <sc-if value="{{showEmpresarial}}" hint-placeholder-val="{{true}}">
+        <button onClick="{{selectEmpresarial}}" style="{{menuStyleEmpresarial}}">
+          <span style="{{menuIconEmpresarial}}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="12" rx="1.5"></rect><path d="M8.5 8V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v2"></path></svg></span>
+          Empresarial
+        </button>
+        </sc-if>
+        <sc-if value="{{showIngenieria}}" hint-placeholder-val="{{true}}">
+        <button onClick="{{selectIngenieria}}" style="{{menuStyleIngenieria}}">
+          <span style="{{menuIconIngenieria}}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="6" height="10"></rect><path d="M10 10V6h6l3 3h-5v2"></path><path d="M16 11v9"></path></svg></span>
+          Seguros de Ingeniería
+        </button>
+        </sc-if>
+        <sc-if value="{{showSctr}}" hint-placeholder-val="{{true}}">
+        <button onClick="{{selectSctr}}" style="{{menuStyleSctr}}">
+          <span style="{{menuIconSctr}}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16a8 8 0 0 1 16 0"></path><path d="M2 16h20"></path><path d="M12 8v3"></path></svg></span>
+          SCTR
+        </button>
+        </sc-if>
+        <sc-if value="{{showVidaley}}" hint-placeholder-val="{{true}}">
+        <button onClick="{{selectVidaley}}" style="{{menuStyleVidaley}}">
+          <span style="{{menuIconVidaley}}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="3" width="12" height="18" rx="1.5"></rect><path d="M9 8h6M9 12h6M9 16h3"></path></svg></span>
+          Vida Ley
+        </button>
+        </sc-if>
+      </div>
+
+      <div style="{{cardsGridStyle}}">
+        <sc-for list="{{selectedCards}}" as="c" hint-placeholder-count="3">
+          <div style="{{c.cardStyle}}">
+            <div style="{{c.mediaStyle}}">
+              <sc-if value="{{c.hasImage}}" hint-placeholder-val="{{true}}">
+                <img src="{{c.image}}" alt="{{c.title}}" style="width:100%;height:100%;object-fit:cover;display:block">
+              </sc-if>
+              <sc-if value="{{c.hasImage}}" hint-placeholder-val="{{false}}">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="{{c.iconStroke}}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{c.iconPath}}"></path></svg>
+              </sc-if>
+            </div>
+            <div style="padding:20px">
+              <div style="font-weight:800;font-size:15px;color:var(--text);margin-bottom:8px;line-height:1.3">{{c.title}}</div>
+              <p style="font-size:13px;color:var(--muted);line-height:1.55;margin:0 0 14px">{{c.desc}}</p>
+              <button onClick="{{c.linkAction}}" style="{{c.linkStyle}}">{{c.linkText}}</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+    </div>
+    </sc-if>
+
+    <div style="position:relative;overflow:hidden;border-radius:20px;background:linear-gradient(120deg,var(--primary),var(--accent));padding:28px 36px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:16px">
+        <div style="width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.5.5.8 1.1.8 1.8v.2h6.4v-.2c0-.7.3-1.3.8-1.8A6 6 0 0 0 12 3Z"></path></svg>
+        </div>
+        <div>
+          <div style="color:#fff;font-family:'Sora',sans-serif;font-weight:800;font-size:17px;margin-bottom:3px">¿No encontraste el seguro que buscas?</div>
+          <div style="color:rgba(255,255,255,.85);font-size:13.5px">Cuéntanos qué necesitas y un asesor te ayuda a elegir la cobertura ideal, sin costo.</div>
+        </div>
+      </div>
+      <a href="{{navWaHref}}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;background:#fff;color:var(--primary);font-weight:800;font-size:14px;padding:13px 22px;border-radius:999px;white-space:nowrap">
+        Hablar con un asesor
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+    </div>
+
+  </div>
+</section><section id="nosotros" style="background:var(--bg-alt);padding:104px 32px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-bottom:64px">
+    <div>
+      <div style="color:var(--accent);font-weight:800;font-size:12.5px;letter-spacing:1.4px;margin-bottom:12px">SOBRE ATENEA SEGUROS</div>
+      <h2 style="font-family:'Sora',sans-serif;font-weight:800;font-size:32px;letter-spacing:-.4px;color:var(--text);margin:0 0 18px">Comparamos, te asesoramos, tú decides</h2>
+      <p style="font-size:15.5px;color:var(--muted);line-height:1.75;margin:0 0 28px">Somos un corredor de seguros independiente que combina la calidez de la asesoría cercana con herramientas digitales de última generación. Comparamos entre las principales aseguradoras del país para ofrecerte la cobertura justa, al mejor precio, sin letra pequeña.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px">
+        <sc-for list="{{values}}" as="v" hint-placeholder-count="3">
+          <div class="benefit-item">
+            <span class="shield-badge" style="position:relative;display:inline-flex;width:38px;height:38px;border-radius:10px;background:var(--surface);border:1px solid var(--border);align-items:center;justify-content:center;margin-bottom:10px">
+              <span class="shield-ring" style="border-radius:10px"></span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{v.iconPath}}"></path></svg>
+            </span>
+            <div style="font-weight:800;font-size:13.5px;color:var(--text);margin-bottom:4px;transition:color .2s ease">
+              {{v.title}}
+              <svg class="benefit-check" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <div style="font-size:12.5px;color:var(--muted);line-height:1.5">{{v.desc}}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="position:relative">
+      <div style="border-radius:22px;overflow:hidden;aspect-ratio:4/3.1;position:relative">
+        <img src="/_blob/75e48a31b96489fc13f9b0cee70e02c9" alt="Familia peruana protegida por Atenea Seguros" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+        <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(10,18,64,.85) 0%,rgba(10,18,64,.35) 45%,rgba(10,18,64,.05) 70%)"></div>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;padding:32px">
+          <div style="color:#fff;font-family:'Sora',sans-serif;font-weight:800;font-size:22px;margin-bottom:8px">15+ años protegiendo familias peruanas</div>
+          <div style="color:rgba(255,255,255,.8);font-size:13.5px;max-width:280px">Antes, durante y después de tu seguro, contigo.</div>
+        </div>
+      </div>
+
+      <div style="position:absolute;top:-18px;right:-18px;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 20px;box-shadow:var(--shadow);animation:floatY 5s ease-in-out infinite .5s">
+        <div style="font-family:'Sora',sans-serif;font-weight:800;font-size:22px;color:var(--primary)">4.9/5</div>
+        <div style="font-size:11px;color:var(--muted)">Satisfacción de clientes</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:36px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:40px">
+    <sc-for list="{{stats}}" as="st" hint-placeholder-count="4">
+      <div style="text-align:center">
+        <div style="font-family:'Sora',sans-serif;font-weight:800;font-size:30px;color:var(--primary)">{{st.value}}</div>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:4px">{{st.label}}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;text-align:center">
+    <div style="font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:.6px;margin-bottom:22px">TRABAJAMOS CON LAS PRINCIPALES ASEGURADORAS SUPERVISADAS POR LA SBS</div>
+  </div>
+  <div class="logo-marquee" style="position:relative;overflow:hidden;max-width:1280px;margin:0 auto;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)">
+    <div class="logo-marquee-track" style="display:flex;align-items:center;gap:16px;width:max-content">
+      <sc-for list="{{insurersLoop}}" as="ins" hint-placeholder-count="10">
+        <span style="background:var(--surface);border:1px solid var(--border);color:var(--text);font-weight:700;font-size:13px;padding:10px 20px;border-radius:12px;white-space:nowrap;flex-shrink:0">{{ins.name}}</span>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APRENDAMOS SOBRE SEGUROS ============ -->
+<section id="galeria" style="padding:104px 32px">
+  <div style="max-width:1280px;margin:0 auto">
+    <div style="text-align:center;max-width:620px;margin:0 auto 52px">
+      <div style="color:var(--accent);font-weight:800;font-size:12.5px;letter-spacing:1.4px;margin-bottom:12px">CONTENIDO EDUCATIVO</div>
+      <h2 style="font-family:'Sora',sans-serif;font-weight:800;font-size:34px;letter-spacing:-.4px;color:var(--text);margin:0 0 14px">Aprendamos sobre seguros</h2>
+      <p style="font-size:16px;color:var(--muted);line-height:1.6;margin:0">Videos cortos y claros para que entiendas qué contratas, sin tecnicismos.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <sc-for list="{{videos}}" as="v" hint-placeholder-count="4">
+        <button onClick="{{v.open}}" style="border:none;padding:0;cursor:pointer;text-align:left;display:block;width:100%;font-family:inherit;border-radius:18px;overflow:hidden;position:relative;aspect-ratio:16/9;background:{{v.bg}};background-size:cover;background-position:center">
+          <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:.3" viewBox="0 0 300 250" preserveAspectRatio="none">
+            <path d="M0,250 L40,180 L75,230 L110,150 L145,220 L180,160 L215,230 L250,170 L300,220 L300,250 Z" fill="#ffffff" opacity=".18"></path>
+          </svg>
+          <div style="position:absolute;top:14px;left:14px;background:rgba(255,255,255,.2);backdrop-filter:blur(6px);color:#fff;font-size:10.5px;font-weight:800;padding:5px 10px;border-radius:999px;letter-spacing:.3px">{{v.tag}}</div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:999px;background:rgba(9,14,29,.45);backdrop-filter:blur(6px);border:2px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(0,0,0,.45)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" style="margin-left:2px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))"><path d="M8 5v14l11-7Z"></path></svg>
+          </div>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;background:linear-gradient(0deg,rgba(0,0,0,.6),transparent 58%)">
+            <div style="color:#fff;font-weight:800;font-size:14.5px;line-height:1.3;margin-bottom:4px">{{v.title}}</div>
+            <div style="color:rgba(255,255,255,.75);font-size:11.5px">{{v.duration}}</div>
+          </div>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIOS ============ -->
+<section id="testimonios" style="background:var(--bg-alt);padding:104px 32px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div style="max-width:1280px;margin:0 auto">
+    <div style="text-align:center;max-width:620px;margin:0 auto 52px">
+      <div style="color:var(--accent);font-weight:800;font-size:12.5px;letter-spacing:1.4px;margin-bottom:12px">LO QUE DICEN NUESTROS CLIENTES</div>
+      <h2 style="font-family:'Sora',sans-serif;font-weight:800;font-size:34px;letter-spacing:-.4px;color:var(--text);margin:0">Confianza que se nota</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      <sc-for list="{{testimonials}}" as="t" hint-placeholder-count="4">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:26px">
+          <div style="display:flex;gap:3px;margin-bottom:14px">
+            <sc-for list="{{t.stars}}" as="star" hint-placeholder-count="5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--accent)"><path d="m12 2 3.1 6.6 7.2.8-5.4 5 1.5 7.2-6.4-3.6-6.4 3.6 1.5-7.2-5.4-5 7.2-.8Z"></path></svg>
+            </sc-for>
+          </div>
+          <p style="font-size:13.5px;line-height:1.65;color:var(--text);margin:0 0 20px">"{{t.quote}}"</p>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="width:36px;height:36px;border-radius:999px;background:var(--primary-soft);color:var(--primary);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center">{{t.initials}}</div>
+            <div>
+              <div style="font-weight:700;font-size:13px;color:var(--text)">{{t.name}}</div>
+              <div style="font-size:11.5px;color:var(--muted)">{{t.city}}</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" style="padding:104px 32px">
+  <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:.8fr 1.2fr;gap:56px;align-items:start">
+
+    <div style="position:relative;padding-top:12px">
+      <div style="position:absolute;top:8%;left:6%;width:82%;height:82%;border-radius:999px;background:var(--primary-soft)"></div>
+      <img src="/_blob/d7dfd61b8d36cbfacdd6a2fc3925435f" alt="Persona resolviendo sus dudas sobre seguros por WhatsApp" style="position:relative;display:block;width:100%;max-width:340px;margin:0 auto;object-fit:contain">
+    </div>
+
+    <div>
+      <div style="color:var(--accent);font-weight:800;font-size:12.5px;letter-spacing:1.4px;margin-bottom:12px">RESOLVEMOS TUS DUDAS</div>
+      <h2 style="font-family:'Sora',sans-serif;font-weight:800;font-size:32px;line-height:1.2;letter-spacing:-.4px;margin:0 0 32px">
+        <span style="color:var(--primary)">¿Aún tienes dudas?</span> <span style="color:var(--text)">Estamos aquí para resolverlas.</span>
+      </h2>
+
+      <sc-for list="{{faqs}}" as="f" hint-placeholder-count="6">
+        <div style="border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:12px;background:var(--surface)">
+          <button onClick="{{f.toggle}}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;background:none;border:none;text-align:left;padding:0;color:var(--text)">
+            <span style="font-weight:700;font-size:15px">{{f.q}}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="{{f.chevStyle}};flex-shrink:0"><path d="M6 9l6 6 6-6"></path></svg>
+          </button>
+          <div style="{{f.answerStyle}}">
+            <p style="font-size:14px;line-height:1.65;color:var(--muted);margin:14px 0 0">{{f.a}}</p>
+          </div>
+        </div>
+      </sc-for>
+
+      <a href="{{navWaHref}}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;margin-top:14px;border:1.5px solid var(--primary);color:var(--primary);font-weight:800;font-size:14.5px;padding:14px 24px;border-radius:999px">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.7 14.3c-.2.7-1.4 1.4-2 1.5-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-5-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5.2.5.8 1.9.9 2 .1.2.1.4 0 .6-.1.2-.2.4-.4.6-.2.2-.4.4-.5.6-.2.2-.4.4-.2.8.2.4 1 1.6 2.1 2.6 1.4 1.3 2.6 1.7 3 1.9.4.2.6.1.8-.1.2-.2.9-1 1.1-1.4.2-.4.5-.3.8-.2.3.1 1.9.9 2.2 1 .3.2.5.2.6.4.1.2.1.9-.1 1.6Z"></path></svg>
+        Quiero asesoría
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ CONTACTO Y MAPA ============ -->
+<section id="contacto" style="background:var(--bg-alt);padding:104px 32px;border-top:1px solid var(--border)">
+  <div style="max-width:1280px;margin:0 auto">
+    <div style="text-align:center;max-width:620px;margin:0 auto 52px">
+      <div style="color:var(--accent);font-weight:800;font-size:12.5px;letter-spacing:1.4px;margin-bottom:12px">HABLEMOS</div>
+      <h2 style="font-family:'Sora',sans-serif;font-weight:800;font-size:34px;letter-spacing:-.4px;color:var(--text);margin:0 0 14px">Estamos para asesorarte, cuando lo necesites</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:36px">
+        <h3 style="font-family:'Sora',sans-serif;font-weight:700;font-size:18px;color:var(--text);margin:0 0 20px">Envíanos un mensaje</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">Nombre</label>
+            <input type="text" placeholder="Tu nombre" style="width:100%;padding:12px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14px">
+          </div>
+          <div>
+            <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">Celular</label>
+            <input type="tel" placeholder="999 999 999" style="width:100%;padding:12px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14px">
+          </div>
+        </div>
+        <div style="margin-bottom:14px">
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">Correo electrónico</label>
+          <input type="email" placeholder="tucorreo@email.com" style="width:100%;padding:12px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14px">
+        </div>
+        <div style="margin-bottom:14px">
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">Tipo de seguro de interés</label>
+          <div style="position:relative">
+            <select style="width:100%;padding:12px 40px 12px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14px;appearance:none">
+              <option>Seguro de Vida</option>
+              <option>Seguro de Salud</option>
+              <option>EPS (Entidad Prestadora de Salud)</option>
+              <option>Seguro Vehicular / SOAT</option>
+              <option>Seguro de Hogar</option>
+              <option>Seguro de Viaje</option>
+              <option>Seguro Empresarial / PYME</option>
+              <option>SCTR</option>
+              <option>Vida Ley</option>
+              <option>Carta Fianza</option>
+            </select>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;top:50%;right:13px;transform:translateY(-50%);pointer-events:none"><path d="M6 9l6 6 6-6"></path></svg>
+          </div>
+        </div>
+        <div style="margin-bottom:22px">
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">Mensaje</label>
+          <textarea rows="3" placeholder="Cuéntanos qué necesitas" style="width:100%;padding:12px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14px;resize:none"></textarea>
+        </div>
+        <button style="width:100%;background:var(--primary);color:#fff;font-weight:800;font-size:14.5px;padding:15px;border-radius:12px;border:none">Enviar mensaje</button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="flex-grow:1;border-radius:20px;overflow:hidden;position:relative;min-height:200px;background:linear-gradient(135deg,var(--primary-soft),var(--bg-alt))">
+          <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 400 260" preserveAspectRatio="none">
+            <line x1="0" y1="60" x2="400" y2="60" stroke="var(--border)" stroke-width="1"></line>
+            <line x1="0" y1="130" x2="400" y2="130" stroke="var(--border)" stroke-width="1"></line>
+            <line x1="0" y1="200" x2="400" y2="200" stroke="var(--border)" stroke-width="1"></line>
+            <line x1="100" y1="0" x2="100" y2="260" stroke="var(--border)" stroke-width="1"></line>
+            <line x1="220" y1="0" x2="220" y2="260" stroke="var(--border)" stroke-width="1"></line>
+            <line x1="320" y1="0" x2="320" y2="260" stroke="var(--border)" stroke-width="1"></line>
+          </svg>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);text-align:center">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="var(--primary)" style="filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"></path></svg>
+            <div style="font-size:12px;font-weight:700;color:var(--text);margin-top:8px">Av. Principal 123, Lima, Perú</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <a href="{{navWaHref}}" target="_blank" rel="noopener" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--accent)"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Z"></path></svg>
+            <div>
+              <div style="font-size:11px;color:var(--muted)">WhatsApp</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text)">+51 947 374 370</div>
+            </div>
+          </a>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"></path><path d="m4 5 8 7 8-7"></path></svg>
+            <div>
+              <div style="font-size:11px;color:var(--muted)">Correo</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text)">contacto@ateneaseguros.pe</div>
+            </div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;align-items:center;gap:12px;grid-column:1 / -1">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"></circle><path d="M12 7v5l3.5 2"></path></svg>
+            <div>
+              <div style="font-size:11px;color:var(--muted)">Horario de atención</div>
+              <div style="font-size:13px;font-weight:700;color:var(--text)">Lun–Vie 9:00–18:00 · Sáb 9:00–13:00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer style="background:linear-gradient(150deg,#0A1240,#101B5C);padding:64px 32px 28px">
+  <div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.3fr 1fr 1fr 1.1fr;gap:40px;margin-bottom:44px">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true">
+          <polygon points="50,6 26,94 40,94 52,46" fill="#ffffff"></polygon>
+          <polygon points="50,6 74,94 60,94 48,46" fill="#ffffff"></polygon>
+          <path d="M18,54 Q50,24 82,54" stroke="url(#goldHead)" stroke-width="7" fill="none" stroke-linecap="round"></path>
+        </svg>
+        <span style="font-family:'Sora',sans-serif;font-weight:800;font-size:17px;color:#fff">ATENEA SEGUROS</span>
+      </div>
+      <p style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;max-width:260px;margin:0 0 18px">Tu tranquilidad, nuestro compromiso. Corredores de seguros independientes al servicio de tu familia y tu negocio.</p>
+    </div>
+
+    <div>
+      <div style="color:#fff;font-weight:700;font-size:13.5px;margin-bottom:16px">Navegación</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <a href="#inicio" style="font-size:13px;color:rgba(255,255,255,.65)">Inicio</a>
+        <a href="#seguros" style="font-size:13px;color:rgba(255,255,255,.65)">Seguros</a>
+        <a href="#nosotros" style="font-size:13px;color:rgba(255,255,255,.65)">Nosotros</a>
+        <a href="#galeria" style="font-size:13px;color:rgba(255,255,255,.65)">Galería</a>
+      </div>
+    </div>
+
+    <div>
+      <div style="color:#fff;font-weight:700;font-size:13.5px;margin-bottom:16px">Seguros</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <a href="#seguros" style="font-size:13px;color:rgba(255,255,255,.65)">Vida · Vida Ley</a>
+        <a href="#seguros" style="font-size:13px;color:rgba(255,255,255,.65)">Salud · EPS</a>
+        <a href="#seguros" style="font-size:13px;color:rgba(255,255,255,.65)">Vehicular / SOAT</a>
+        <a href="#seguros" style="font-size:13px;color:rgba(255,255,255,.65)">Hogar · Viaje</a>
+        <a href="#seguros" style="font-size:13px;color:rgba(255,255,255,.65)">Empresarial · SCTR · Carta Fianza</a>
+      </div>
+    </div>
+
+    <div>
+      <div style="color:#fff;font-weight:700;font-size:13.5px;margin-bottom:16px">Contacto</div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:rgba(255,255,255,.65)">
+        <span>+51 947 374 370</span>
+        <span>contacto@ateneaseguros.pe</span>
+        <span>Av. Principal 123, Lima, Perú</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width:1280px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,.12);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <span style="font-size:12px;color:rgba(255,255,255,.5)">© 2026 Atenea Seguros. Corredores de Seguros. Todos los derechos reservados.</span>
+    <span style="font-size:12px;color:rgba(255,255,255,.5)">Regulado y supervisado conforme a la normativa vigente.</span>
+  </div>
+</footer>
+
+<!-- ============ QUOTE MODAL ============ -->
+<sc-if value="{{quoteOpen}}" hint-placeholder-val="{{true}}">
+  <div onClick="{{closeQuote}}" style="position:fixed;inset:0;z-index:90;background:rgba(9,14,29,.55);display:flex;align-items:center;justify-content:center;padding:20px">
+    <div onClick="{{stopClick}}" style="background:var(--surface);border-radius:22px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto;padding:32px;box-shadow:var(--shadow);position:relative">
+      <button onClick="{{closeQuote}}" aria-label="Cerrar" style="position:absolute;top:18px;right:18px;width:32px;height:32px;border-radius:999px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);display:flex;align-items:center;justify-content:center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+
+      <div style="color:var(--primary);font-weight:800;font-size:12px;letter-spacing:1.2px;margin-bottom:10px">COTIZADOR — {{selectedLabelUpper}}</div>
+      <h3 style="font-family:'Sora',sans-serif;font-weight:800;font-size:22px;color:var(--text);margin:0 0 10px;padding-right:24px">{{selectedHeadline}}</h3>
+      <p style="font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 16px">{{selectedCopy}}</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px">
+        <sc-for list="{{selectedTags}}" as="tag" hint-placeholder-count="3">
+          <span class="benefit-item" style="background:var(--bg-alt);border:1px solid var(--border);color:var(--text);font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:999px;transition:color .2s ease">
+            {{tag.text}}
+            <svg class="benefit-check" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"></path></svg>
+          </span>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">Nombre completo</label>
+          <input type="text" placeholder="Tu nombre" value="{{prodName}}" onChange="{{handleProdName}}" style="width:100%;padding:12px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14px">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">WhatsApp</label>
+          <input type="tel" placeholder="999 999 999" value="{{prodPhone}}" onChange="{{handleProdPhone}}" style="width:100%;padding:12px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14px">
+        </div>
+      </div>
+      <div style="margin-bottom:18px">
+        <label style="display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px">{{selectedDetailLabel}}</label>
+        <input type="text" placeholder="{{selectedDetailPlaceholder}}" value="{{prodDetail}}" onChange="{{handleProdDetail}}" style="width:100%;padding:12px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);font-size:14px">
+      </div>
+
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px">
+        <span>Progreso del formulario</span><span>{{prodProgressLabel}}</span>
+      </div>
+      <div class="progress-track" style="margin-bottom:20px">
+        <div class="progress-fill" style="width:{{prodProgressPct}}%"></div>
+      </div>
+
+      <a href="{{prodWaHref}}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--primary);color:#fff;font-weight:800;font-size:14.5px;padding:15px;border-radius:12px">
+        Enviar cotización por WhatsApp
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </a>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ============ INFO MODAL ============ -->
+<sc-if value="{{infoOpen}}" hint-placeholder-val="{{true}}">
+  <div onClick="{{closeInfo}}" style="position:fixed;inset:0;z-index:90;background:rgba(9,14,29,.55);display:flex;align-items:center;justify-content:center;padding:20px">
+    <div onClick="{{stopClick}}" style="background:var(--surface);border-radius:22px;max-width:440px;width:100%;padding:32px;box-shadow:var(--shadow);position:relative">
+      <button onClick="{{closeInfo}}" aria-label="Cerrar" style="position:absolute;top:18px;right:18px;width:32px;height:32px;border-radius:999px;border:1px solid var(--border);background:var(--bg-alt);color:var(--text);display:flex;align-items:center;justify-content:center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+      <div style="width:44px;height:44px;border-radius:12px;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;margin-bottom:18px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{infoIconPath}}"></path></svg>
+      </div>
+      <div style="color:var(--accent);font-weight:800;font-size:11.5px;letter-spacing:1.2px;margin-bottom:8px">{{selectedLabelUpper}}</div>
+      <h3 style="font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:var(--text);margin:0 0 14px;padding-right:20px">{{infoTitle}}</h3>
+      <p style="font-size:14.5px;color:var(--muted);line-height:1.65;margin:0 0 24px">{{infoDesc}}</p>
+      <button onClick="{{openQuoteFromInfo}}" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--primary);color:#fff;font-weight:800;font-size:14.5px;padding:14px;border-radius:12px;border:none">
+        Quiero cotizar
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </button>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ============ VIDEO MODAL ============ -->
+<sc-if value="{{videoOpen}}" hint-placeholder-val="{{true}}">
+  <div onClick="{{closeVideo}}" style="position:fixed;inset:0;z-index:90;background:rgba(9,14,29,.7);display:flex;align-items:center;justify-content:center;padding:20px">
+    <div onClick="{{stopClick}}" style="background:var(--surface);border-radius:20px;max-width:600px;width:100%;overflow:hidden;box-shadow:var(--shadow);position:relative">
+      <button onClick="{{closeVideo}}" aria-label="Cerrar" style="position:absolute;top:16px;right:16px;z-index:2;width:32px;height:32px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:rgba(9,14,29,.4);color:#fff;display:flex;align-items:center;justify-content:center">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+      <div style="aspect-ratio:16/9;background:{{videoGradient}};display:flex;align-items:center;justify-content:center;position:relative">
+        <div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(9,14,29,.35),rgba(9,14,29,.1) 50%)"></div>
+        <a href="{{videoYoutubeUrl}}" target="_blank" rel="noopener" aria-label="Ver video en YouTube" style="position:relative;width:64px;height:64px;border-radius:999px;background:rgba(255,255,255,.22);backdrop-filter:blur(4px);border:1.5px solid rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7Z"></path></svg>
+        </a>
+      </div>
+      <div style="padding:26px 28px">
+        <div style="color:var(--accent);font-weight:800;font-size:11.5px;letter-spacing:1.2px;margin-bottom:8px">{{videoTag}} · {{videoDuration}}</div>
+        <h3 style="font-family:'Sora',sans-serif;font-weight:800;font-size:20px;color:var(--text);margin:0 0 12px">{{videoTitle}}</h3>
+        <p style="font-size:14.5px;color:var(--muted);line-height:1.65;margin:0 0 22px">{{videoDesc}}</p>
+        <a href="{{navWaHref}}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:var(--primary);color:#fff;font-weight:800;font-size:14.5px;padding:14px;border-radius:12px">
+          ¿Tienes dudas sobre este tema? Escríbenos
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ============ FLOATING WHATSAPP ============ -->
+<a href="{{navWaHref}}" target="_blank" rel="noopener" aria-label="Cotizar por WhatsApp" style="position:fixed;bottom:26px;right:26px;z-index:60;width:60px;height:60px;border-radius:999px;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 16px 34px rgba(0,0,0,.28)">
+  <span style="position:absolute;inset:0;border-radius:999px;background:#25D366;opacity:.5;animation:pulseDot 2s ease-in-out infinite"></span>
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff" style="position:relative"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm5.7 14.3c-.2.7-1.4 1.4-2 1.5-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-5-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5.2.5.8 1.9.9 2 .1.2.1.4 0 .6-.1.2-.2.4-.4.6-.2.2-.4.4-.5.6-.2.2-.4.4-.2.8.2.4 1 1.6 2.1 2.6 1.4 1.3 2.6 1.7 3 1.9.4.2.6.1.8-.1.2-.2.9-1 1.1-1.4.2-.4.5-.3.8-.2.3.1 1.9.9 2.2 1 .3.2.5.2.6.4.1.2.1.9-.1 1.6Z"></path></svg>
+</a>
+
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"primary":{"editor":"color","default":"#1F3FD6","options":["#1F3FD6","#16297A","#0FB9B1","#4C6FFF"]},"accent":{"editor":"color","default":"#0FB9B1","options":["#0FB9B1","#1FE0D6","#1F3FD6","#0E9A93"]},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dark: false,
+      slide: 0,
+      selected: 'vehicular',
+      seguroGroup: null,
+      hubSub: 'cartafianza',
+      openFaq: 0,
+      quickType: 'vida',
+      quickName: '',
+      quickDni: '',
+      quickPhone: '',
+      prodName: '',
+      prodPhone: '',
+      prodDetail: '',
+      quoteOpen: false,
+      infoOpen: false,
+      infoTitle: '',
+      infoDesc: '',
+      videoOpen: false,
+      videoTitle: '',
+      videoDesc: '',
+      videoTag: '',
+      videoDuration: '',
+      videoGradient: '',
+      videoYoutubeUrl: '#'
+    };
+  }
+
+  componentDidMount() {
+    this._t = setInterval(() => {
+      this.setState({ slide: (this.state.slide + 1) % 3 });
+    }, 6000);
+  }
+
+  componentWillUnmount() {
+    if (this._t) clearInterval(this._t);
+  }
+
+  waLink(text) {
+    return 'https://wa.me/51947374370?text=' + encodeURIComponent(text);
+  }
+
+  renderVals() {
+    const primary = this.props.primary ?? '#1F3FD6';
+    const accent = this.props.accent ?? '#0FB9B1';
+    const dark = this.state.dark;
+
+    const theme = dark
+      ? {
+          bg: '#090E1D', bgAlt: '#0E1630', surface: '#121B38', text: '#F2F5FF',
+          muted: '#93A0C2', border: '#212C52', primary: '#5C7CFF',
+          primarySoft: 'rgba(92,124,255,0.16)', accent: '#22E4D9',
+          navBg: 'rgba(9,14,29,0.82)', shadow: '0 20px 60px rgba(0,0,0,0.45)'
+        }
+      : {
+          bg: '#FFFFFF', bgAlt: '#F3F6FC', surface: '#FFFFFF', text: '#0E1526',
+          muted: '#57648C', border: '#E2E7F5', primary: primary,
+          primarySoft: 'rgba(31,63,214,0.08)', accent: accent,
+          navBg: 'rgba(255,255,255,0.85)', shadow: '0 20px 50px rgba(16,30,80,0.10)'
+        };
+
+    const rootStyle =
+      '--bg:' + theme.bg + ';--bg-alt:' + theme.bgAlt + ';--surface:' + theme.surface +
+      ';--text:' + theme.text + ';--muted:' + theme.muted + ';--border:' + theme.border +
+      ';--primary:' + theme.primary + ';--primary-soft:' + theme.primarySoft +
+      ';--accent:' + theme.accent + ';--nav-bg:' + theme.navBg + ';--shadow:' + theme.shadow +
+      ';width:100%;background:' + theme.bg + ';color:' + theme.text +
+      ";font-family:'Manrope',sans-serif;transition:background .3s ease,color .3s ease;";
+
+    const logoInk = dark ? '#FFFFFF' : '#122058';
+    const themeIconPath = dark
+      ? 'M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z'
+      : 'M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z';
+
+    // Slides
+    const slidesRaw = [
+      { headline: 'El seguro correcto para tu familia, sin letra pequeña.', sub: 'Seguros de vida, salud y patrimonio con asesoría 100% personalizada, cara a cara y por WhatsApp.' },
+      { headline: 'Cotiza tu seguro vehicular en minutos, por WhatsApp.', sub: 'Comparamos las mejores coberturas SOAT y todo riesgo para ti, sin filas ni papeleo.' },
+      { headline: 'Protege tu negocio como proteges tu legado.', sub: 'Seguros empresariales pensados para emprendedores y PYMEs peruanas en crecimiento.' }
+    ];
+    const slides = slidesRaw.map((s, i) => {
+      const active = this.state.slide === i;
+      return {
+        headline: s.headline,
+        sub: s.sub,
+        wrapStyle: 'display:' + (active ? 'block' : 'none') + ';',
+        dotStyle: 'width:' + (active ? '26px' : '8px') + ';height:8px;border-radius:999px;border:none;background:' + (active ? '#ffffff' : 'rgba(255,255,255,.4)') + ';transition:all .25s ease;',
+        pick: () => this.setState({ slide: i })
+      };
+    });
+
+    // Trust badges
+    const trustBadges = [
+      { value: '15+ años', label: 'De experiencia', iconPath: 'M12 2 3 7v6c0 5 4 8.5 9 9 5-.5 9-4 9-9V7l-9-5Z' },
+      { value: '20+', label: 'Aseguradoras aliadas', iconPath: 'M9 12l2 2 4-4M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' },
+      { value: '8,000+', label: 'Familias protegidas', iconPath: 'M17 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M9 10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 10v-2a4 4 0 0 0-3-3.87M15 2.13A4 4 0 0 1 15 9.88' },
+      { value: '< 1 hora', label: 'Tiempo de respuesta', iconPath: 'M12 7v5l3.5 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' }
+    ];
+
+    // Product catalog
+    const catalog = {
+      vida: { label: 'Seguro de Vida', iconPath: 'M20.8 8.6c0 4.4-4.4 7.6-8.8 11.4C7.6 16.2 3.2 13 3.2 8.6a4.6 4.6 0 0 1 8.8-1.8 4.6 4.6 0 0 1 8.8 1.8Z', image: 'https://images.pexels.com/photos/7879529/pexels-photo-7879529.jpeg?auto=compress&cs=tinysrgb&w=600', headline: 'Un respaldo económico para tu familia, pase lo que pase.', copy: 'Cubrimos fallecimiento, invalidez y enfermedades graves, con montos de cobertura a tu medida y beneficiarios protegidos desde el primer día.', tags: ['Cobertura desde S/50 al mes', 'Beneficiarios ilimitados', 'Sin exámenes médicos iniciales'], detailLabel: 'Edad y N° de beneficiarios', detailPlaceholder: 'Ej: 34 años, 2 beneficiarios',
+        cards: [
+          { title: 'Seguro de Vida Atenea', desc: 'Protección económica para tu familia ante fallecimiento o invalidez, con beneficiarios asegurados desde el día uno.' },
+          { title: '¿Cómo elegir el monto de cobertura?', desc: 'Te ayudamos a calcular el capital asegurado ideal según tus ingresos y responsabilidades familiares.' },
+          { title: 'Beneficios adicionales', desc: 'Invalidez total y enfermedades graves incluidas, sin exámenes médicos para montos iniciales.' }
+        ] },
+      salud: { label: 'Seguro de Salud', iconPath: 'M12 7.5v9M7.5 12h9', image: 'https://images.pexels.com/photos/7447009/pexels-photo-7447009.jpeg?auto=compress&cs=tinysrgb&w=600', headline: 'Atención médica de calidad, cuando más la necesitas.', copy: 'Acceso a clínicas y médicos de primer nivel, cobertura ambulatoria y hospitalaria, y planes familiares flexibles según tu presupuesto.', tags: ['Clínicas de primer nivel', 'Planes familiares', 'Cobertura ambulatoria y hospitalaria'], detailLabel: '¿Tienes un seguro de salud actualmente?', detailPlaceholder: 'Ej: No, o EPS/seguro actual',
+        cards: [
+          { title: 'Seguro de Salud Atenea', desc: 'Acceso a clínicas de primer nivel, con cobertura ambulatoria y hospitalaria a tu medida.' },
+          { title: 'Planes familiares flexibles', desc: 'Suma a tu pareja e hijos con descuentos por grupo familiar y copagos accesibles.' },
+          { title: 'Preexistencias y coberturas', desc: 'Te explicamos qué cubre cada plan y cómo declarar tus antecedentes médicos.' }
+        ] },
+      vehicular: { label: 'Seguro Vehicular / SOAT', iconPath: 'M4 16V11l2.4-5h11.2L20 11v5', image: 'https://images.pexels.com/photos/5530934/pexels-photo-5530934.jpeg?auto=compress&cs=tinysrgb&w=600', headline: 'Maneja tranquilo, con respaldo ante cualquier imprevisto.', copy: 'Comparamos coberturas todo riesgo y SOAT entre las principales aseguradoras, incluyendo asistencia vial y auto de reemplazo.', tags: ['Asistencia vial 24/7', 'Auto de reemplazo', 'SOAT y todo riesgo'], detailLabel: 'Placa, marca y año del vehículo', detailPlaceholder: 'Ej: ABC-123, Toyota Yaris 2021',
+        cards: [
+          { title: 'Seguro Vehicular Todo Riesgo', desc: 'Cobertura ante choques, robo total y daños a terceros, con auto de reemplazo incluido.' },
+          { title: 'SOAT al instante', desc: 'Emitimos tu SOAT en minutos, con envío digital para que circules sin contratiempos.' },
+          { title: 'Asistencia vial 24/7', desc: 'Grúa, cerrajería y auxilio mecánico en cualquier punto del país, todos los días.' }
+        ] },
+      hogar: { label: 'Seguro de Hogar', iconPath: 'M4 11.5 12 4l8 7.5', image: '/_blob/17be8fee5ff08c184e309a9f9d2a0ee0', headline: 'Tu patrimonio, resguardado ante incendios, robos y desastres.', copy: 'Protegemos tu vivienda y sus contenidos ante siniestros naturales y humanos, con planes que se ajustan al valor real de tu propiedad.', tags: ['Incendio y desastres naturales', 'Robo de contenidos', 'Responsabilidad civil incluida'], detailLabel: 'Distrito y valor aproximado del inmueble', detailPlaceholder: 'Ej: Miraflores, S/350,000',
+        cards: [
+          { title: 'Seguro de Hogar Integral', desc: 'Protege tu vivienda y sus contenidos ante incendios, robos y desastres naturales.' },
+          { title: 'Responsabilidad civil incluida', desc: 'Cobertura ante daños que ocasiones a terceros dentro de tu propiedad.' },
+          { title: '¿Cuánto asegurar tu inmueble?', desc: 'Calculamos el valor de reconstrucción real para que no pagues de más ni de menos.' }
+        ] },
+      viaje: { label: 'Seguro de Viaje', iconPath: 'M21 4 3 11l6.5 2.5L12 20l3-6.5L21 4Z', image: 'https://images.pexels.com/photos/4173229/pexels-photo-4173229.jpeg?auto=compress&cs=tinysrgb&w=600', headline: 'Explora el mundo sabiendo que estás cubierto.', copy: 'Asistencia médica internacional, cobertura de equipaje y cancelación de viaje, para que disfrutes cada destino sin preocupaciones.', tags: ['Asistencia médica internacional', 'Cobertura de equipaje', 'Cancelación de viaje'], detailLabel: 'Destino y fecha de viaje', detailPlaceholder: 'Ej: Cusco, 15 de octubre',
+        cards: [
+          { title: 'Seguro de Viaje Internacional', desc: 'Asistencia médica en el extranjero, cobertura de equipaje y cancelación de viaje.' },
+          { title: 'Viajes cortos y de negocio', desc: 'Planes flexibles por días, ideales para viajes de trabajo o escapadas cortas.' },
+          { title: 'Antes de viajar, revisa esto', desc: 'Los requisitos de seguro obligatorio según tu destino y cómo cumplirlos.' }
+        ] },
+      empresarial: { label: 'Seguro Empresarial / PYME', iconPath: 'M3.5 8h17v12h-17zM8.5 8V6a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v2', image: 'https://images.pexels.com/photos/10375824/pexels-photo-10375824.jpeg?auto=compress&cs=tinysrgb&w=600', headline: 'Blinda la continuidad de tu negocio ante cualquier eventualidad.', copy: 'Cobertura de local, mercadería, responsabilidad civil y accidentes laborales, con planes diseñados para emprendedores y PYMEs.', tags: ['Cobertura de local y mercadería', 'Responsabilidad civil', 'Accidentes laborales (SCTR)'], detailLabel: 'Rubro y N° de trabajadores', detailPlaceholder: 'Ej: Textiles, 8 trabajadores',
+        cards: [
+          { title: 'Seguro Empresarial / PYME', desc: 'Cobertura de local, mercadería y responsabilidad civil para tu negocio en marcha.' },
+          { title: 'SCTR para tus trabajadores', desc: 'Cumple con la ley y protege a tu equipo ante accidentes laborales.' },
+          { title: 'Continuidad de negocio', desc: 'Planes pensados para que un siniestro no detenga tu operación ni tus ingresos.' }
+        ] },
+      eps: { label: 'EPS (Entidad Prestadora de Salud)', iconPath: 'M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3ZM12 9v6M9 12h6', image: 'https://images.pexels.com/photos/6627864/pexels-photo-6627864.jpeg?auto=compress&cs=tinysrgb&w=600', headline: 'Complementa tu EsSalud con atención privada de calidad.', copy: 'Las EPS te dan acceso a clínicas privadas manteniendo tu aporte a EsSalud, con planes para ti, tu familia o tu empresa.', tags: ['Compatible con EsSalud', 'Clínicas privadas afiliadas', 'Planes individuales y corporativos'], detailLabel: '¿Plan individual o para tu empresa?', detailPlaceholder: 'Ej: Plan individual, o empresa con 15 trabajadores',
+        cards: [
+          { title: 'EPS Atenea', desc: 'Accede a clínicas privadas sin perder tu aporte a EsSalud, con cobertura ambulatoria y hospitalaria.' },
+          { title: 'Planes corporativos EPS', desc: 'Ofrece a tu equipo un beneficio de salud privado con tarifas preferenciales por volumen.' },
+          { title: '¿EPS o seguro de salud particular?', desc: 'Te explicamos las diferencias para elegir la opción que más te conviene.' }
+        ] },
+      sctr: { label: 'SCTR', iconPath: 'M4 16a8 8 0 0 1 16 0M2 16h20M12 8v3', image: 'https://images.pexels.com/photos/7788227/pexels-photo-7788227.jpeg?auto=compress&cs=tinysrgb&w=600', headline: 'Cumple con la ley y protege a tu personal en actividades de riesgo.', copy: 'El SCTR es obligatorio para trabajadores en actividades de alto riesgo, cubriendo pensión y salud ante accidentes laborales o enfermedades profesionales.', tags: ['Obligatorio por ley', 'Cobertura pensión y salud', 'Minería, construcción e industria'], detailLabel: 'Rubro y N° de trabajadores en riesgo', detailPlaceholder: 'Ej: Construcción, 20 trabajadores',
+        cards: [
+          { title: 'SCTR Atenea', desc: 'Cobertura de pensión y salud para trabajadores expuestos a actividades de alto riesgo.' },
+          { title: '¿Tu empresa está obligada a tener SCTR?', desc: 'Revisamos si tu actividad está en el listado de riesgo según la ley peruana.' },
+          { title: 'Salud y pensión en un solo seguro', desc: 'Cubre invalidez, muerte y enfermedad profesional derivadas del trabajo de riesgo.' }
+        ] },
+      vidaley: { label: 'Vida Ley', iconPath: 'M7 3h10v18h-10zM9 8h6M9 12h6M9 16h4', image: 'https://images.pexels.com/photos/5060992/pexels-photo-5060992.jpeg?auto=compress&cs=tinysrgb&w=600', headline: 'El seguro de vida obligatorio para tus trabajadores, sin complicaciones.', copy: 'Todo trabajador con más de 4 años cumplidos tiene derecho al Seguro de Vida Ley. Te ayudamos a contratarlo y mantenerlo vigente sin multas.', tags: ['Obligatorio desde el 4to año', 'Fallecimiento e invalidez', 'Evita multas de Sunafil'], detailLabel: 'N° de trabajadores a asegurar', detailPlaceholder: 'Ej: 12 trabajadores',
+        cards: [
+          { title: 'Vida Ley Atenea', desc: 'Cumple con la obligación laboral y protege a tus colaboradores ante fallecimiento o invalidez.' },
+          { title: '¿Desde cuándo es obligatorio?', desc: 'Te explicamos los plazos legales y qué pasa si no lo contratas a tiempo.' },
+          { title: 'Gestión para varias empresas', desc: 'Si manejas planillas de distintas razones sociales, centralizamos tu gestión en un solo lugar.' }
+        ] },
+      cartafianza: { label: 'Carta Fianza', iconPath: 'M5 3h9v18h-9zM13,17 m-4,0 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0M11 17l1.3 1.3L15.5 15.5', image: 'https://images.pexels.com/photos/8069428/pexels-photo-8069428.jpeg?auto=compress&cs=tinysrgb&w=600', headline: 'La garantía que tus contratos y licitaciones necesitan, rápido.', copy: 'Emitimos cartas fianza de fiel cumplimiento, adelanto y garantía para que puedas participar en licitaciones y contratos sin comprometer tu liquidez.', tags: ['Fiel cumplimiento y adelanto', 'Ideal para licitaciones públicas', 'Emisión ágil'], detailLabel: 'Tipo de carta fianza y monto aproximado', detailPlaceholder: 'Ej: Fiel cumplimiento, S/80,000',
+        cards: [
+          { title: 'Carta Fianza Atenea', desc: 'Garantías de fiel cumplimiento, adelanto y seriedad de oferta para tus procesos y contratos.' },
+          { title: '¿Qué necesito para tramitarla?', desc: 'Te contamos los requisitos y tiempos habituales de emisión según el monto.' },
+          { title: 'Sin comprometer tu línea de crédito', desc: 'Una alternativa a la garantía bancaria que libera tu capacidad de financiamiento.' }
+        ] }
+    };
+
+    const hubCatalog = {
+      empresarial: {
+        order: ['cartafianza', 'creditos', 'multiriesgo'],
+        items: {
+          cartafianza: { label: 'Carta Fianza', cardTitle: 'Carta Fianza', cardDesc: 'La garantía necesaria para tus licitaciones y contratos.', headline: 'La garantía que tus contratos y licitaciones necesitan, rápido.', copy: 'Emitimos cartas fianza de fiel cumplimiento, adelanto y garantía para que puedas participar en licitaciones y contratos sin comprometer tu liquidez.', tags: ['Fiel cumplimiento y adelanto', 'Ideal para licitaciones públicas', 'Emisión ágil'], detailLabel: 'Tipo de carta fianza y monto aproximado', detailPlaceholder: 'Ej: Fiel cumplimiento, S/80,000', image: 'https://images.pexels.com/photos/8069428/pexels-photo-8069428.jpeg?auto=compress&cs=tinysrgb&w=600' },
+          creditos: { label: 'Seguro de Créditos', cardTitle: 'Seguro de Créditos', cardDesc: 'Protege tus cuentas por cobrar y asegura la liquidez de tu negocio.', headline: 'Protege tus cuentas por cobrar ante el impago de tus clientes.', copy: 'Cubre el riesgo de incumplimiento de pago de tus clientes comerciales, asegurando el flujo de caja y la continuidad de tu negocio.', tags: ['Protección de cuentas por cobrar', 'Cobertura ante insolvencia de clientes', 'Mejora tu acceso a financiamiento'], detailLabel: 'Monto aproximado de ventas al crédito', detailPlaceholder: 'Ej: S/200,000 en ventas al crédito', image: 'https://images.pexels.com/photos/209224/pexels-photo-209224.jpeg?auto=compress&cs=tinysrgb&w=600' },
+          multiriesgo: { label: 'Seguro Multiriesgo', cardTitle: 'Seguro Multiriesgo', cardDesc: 'Protección integral para tu empresa contra múltiples riesgos.', headline: 'Blinda la continuidad de tu negocio ante cualquier eventualidad.', copy: 'Cobertura de local, mercadería, equipos y responsabilidad civil en una sola póliza flexible para tu negocio.', tags: ['Cobertura de local y mercadería', 'Responsabilidad civil incluida', 'Ideal para PYMEs'], detailLabel: 'Rubro y N° de trabajadores', detailPlaceholder: 'Ej: Textiles, 8 trabajadores', image: '/_blob/81091256e8b4bd1b089d31d3e0195c2f' }
+        }
+      },
+      salud: {
+        order: ['vidaindividual', 'vidadevolucion', 'eps'],
+        items: {
+          vidaindividual: { label: 'Seguro de Vida Individual', cardTitle: 'Seguro de Vida Individual', cardDesc: 'La tranquilidad de que tu familia estará protegida.', headline: 'Un respaldo económico para tu familia, pase lo que pase.', copy: 'Cubrimos fallecimiento, invalidez y enfermedades graves, con montos de cobertura a tu medida y beneficiarios protegidos desde el primer día.', tags: ['Cobertura desde S/50 al mes', 'Beneficiarios ilimitados', 'Sin exámenes médicos iniciales'], detailLabel: 'Edad y N° de beneficiarios', detailPlaceholder: 'Ej: 34 años, 2 beneficiarios', image: '/_blob/23ca8ba590437ab72d400197e8e6bdc9' },
+          vidadevolucion: { label: 'Vida Devolución', cardTitle: 'Vida Devolución', cardDesc: 'Protección para tu vida y ahorro garantizado con devolución de primas.', headline: 'Protección hoy, ahorro garantizado para el mañana.', copy: 'Un seguro de vida que además te devuelve las primas pagadas al final del plazo si no se presentó ningún siniestro, combinando protección y ahorro.', tags: ['Devolución de primas al vencimiento', 'Protección + ahorro en un solo plan', 'Beneficiarios protegidos durante la vigencia'], detailLabel: 'Edad y monto de ahorro deseado', detailPlaceholder: 'Ej: 30 años, S/300 mensuales', image: '/_blob/6efc424e8af91e781d331e30fbf016f4' },
+          eps: { label: 'EPS (Entidad Prestadora de Salud)', cardTitle: 'EPS', cardDesc: 'Buscamos la mejor Entidad Prestadora de Salud para ti o tu empresa.', headline: 'Complementa tu EsSalud con atención privada de calidad.', copy: 'Las EPS te dan acceso a clínicas privadas manteniendo tu aporte a EsSalud, con planes para ti, tu familia o tu empresa.', tags: ['Compatible con EsSalud', 'Clínicas privadas afiliadas', 'Planes individuales y corporativos'], detailLabel: '¿Plan individual o para tu empresa?', detailPlaceholder: 'Ej: Plan individual, o empresa con 15 trabajadores', image: 'https://images.pexels.com/photos/6627864/pexels-photo-6627864.jpeg?auto=compress&cs=tinysrgb&w=600' }
+        }
+      },
+      vehicular: {
+        order: ['autos', 'soat', 'carga'],
+        items: {
+          autos: { label: 'Seguro Vehicular', cardTitle: 'Seguro Vehicular', cardDesc: 'Autos, Motos y otras unidades. Cobertura total para tu vehículo contra cualquier percance.', headline: 'Maneja tranquilo, con cobertura total para tu vehículo.', copy: 'Cubrimos autos, motos y otras unidades ante choques, robo total y daños a terceros, con auto de reemplazo incluido.', tags: ['Cobertura total y contra terceros', 'Auto de reemplazo incluido', 'Asistencia vial 24/7'], detailLabel: 'Placa, marca y año del vehículo', detailPlaceholder: 'Ej: ABC-123, Toyota Yaris 2021', image: 'https://images.pexels.com/photos/5530934/pexels-photo-5530934.jpeg?auto=compress&cs=tinysrgb&w=600' },
+          soat: { label: 'SOAT', cardTitle: 'SOAT', cardDesc: 'Protección esencial para cumplir con la responsabilidad civil.', headline: 'Tu SOAT al instante, para circular tranquilo y en regla.', copy: 'Emitimos tu SOAT en minutos, con envío digital, cumpliendo con la responsabilidad civil obligatoria ante accidentes de tránsito.', tags: ['Emisión inmediata', 'Cumple con la ley de tránsito', 'Cobertura de responsabilidad civil'], detailLabel: 'Placa y tipo de vehículo', detailPlaceholder: 'Ej: ABC-123, auto particular', image: 'https://images.pexels.com/photos/16129058/pexels-photo-16129058.jpeg?auto=compress&cs=tinysrgb&w=600' },
+          carga: { label: 'Seguro de Transporte de Carga', cardTitle: 'Seguro de Transporte de Carga', cardDesc: 'Protección para tu mercadería y unidades durante el transporte.', headline: 'Tu mercadería protegida en cada kilómetro de transporte.', copy: 'Cubre pérdidas o daños a la carga transportada por tierra, además de tus unidades de transporte, ante accidentes, robo o siniestros en ruta.', tags: ['Cobertura de mercadería en tránsito', 'Protección de unidades de transporte', 'Ideal para empresas de carga y logística'], detailLabel: 'Tipo de carga y valor aproximado', detailPlaceholder: 'Ej: Maquinaria, S/150,000', image: 'https://images.pexels.com/photos/18446790/pexels-photo-18446790.jpeg?auto=compress&cs=tinysrgb&w=600' }
+        }
+      },
+      ingenieria: {
+        order: ['car', 'trec', 'ear', 'rc'],
+        items: {
+          car: { label: 'Seguro CAR', cardTitle: 'Seguro CAR', cardDesc: 'Protección especializada para proyectos de construcción y montaje.', headline: 'Cobertura integral para tu obra durante toda la etapa de construcción.', copy: 'El Seguro CAR (Construction All Risk) protege tu proyecto ante daños materiales durante la construcción, incluyendo materiales, maquinaria y responsabilidad civil frente a terceros.', tags: ['Daños materiales durante la obra', 'Cobertura de materiales y equipos', 'Responsabilidad civil incluida'], detailLabel: 'Tipo de obra y monto asegurado', detailPlaceholder: 'Ej: Edificación residencial, S/3,000,000', image: 'https://images.pexels.com/photos/5505125/pexels-photo-5505125.jpeg?auto=compress&cs=tinysrgb&w=600' },
+          trec: { label: 'Seguro TREC', cardTitle: 'Seguro TREC', cardDesc: 'Protección especializada para maquinaria y equipos de construcción.', headline: 'Tu maquinaria pesada, protegida ante cualquier imprevisto en obra.', copy: 'El TREC cubre daños materiales a la maquinaria y equipo de contratistas (excavadoras, grúas, mezcladoras) durante su uso, traslado o almacenamiento en obra.', tags: ['Maquinaria y equipo pesado', 'Cobertura en uso, traslado y almacenaje', 'Ideal para constructoras y contratistas'], detailLabel: 'Tipo y cantidad de maquinaria a asegurar', detailPlaceholder: 'Ej: 2 excavadoras, 1 grúa torre', image: 'https://images.pexels.com/photos/4513940/pexels-photo-4513940.jpeg?auto=compress&cs=tinysrgb&w=600' },
+          ear: { label: 'Seguro EAR', cardTitle: 'Seguro EAR', cardDesc: 'Protección para el montaje e instalación de estructuras y equipos industriales.', headline: 'Instalaciones industriales protegidas desde el montaje hasta la puesta en marcha.', copy: 'El Seguro EAR (Erection All Risk) cubre daños durante el montaje, prueba y puesta en marcha de maquinaria y estructuras industriales.', tags: ['Montaje de estructuras industriales', 'Cobertura hasta la puesta en marcha', 'Ideal para plantas y fábricas'], detailLabel: 'Tipo de instalación y valor del montaje', detailPlaceholder: 'Ej: Planta industrial, S/5,000,000', image: 'https://images.pexels.com/photos/14169558/pexels-photo-14169558.jpeg?auto=compress&cs=tinysrgb&w=600' },
+          rc: { label: 'Responsabilidad Civil', cardTitle: 'Responsabilidad Civil', cardDesc: 'Protección contra daños a terceros en tus proyectos y operaciones.', headline: 'Protege tu empresa ante reclamos de terceros por daños en tus operaciones.', copy: 'Cubre indemnizaciones por daños materiales, personales o consecuenciales que tu empresa pueda ocasionar a terceros durante sus proyectos u operaciones.', tags: ['Daños a terceros', 'Cobertura de gastos legales', 'Ideal para contratistas y consultoras'], detailLabel: 'Tipo de proyecto y límite de cobertura deseado', detailPlaceholder: 'Ej: Consultoría, S/500,000', image: 'https://images.pexels.com/photos/17682883/pexels-photo-17682883.jpeg?auto=compress&cs=tinysrgb&w=600' }
+        }
+      }
+    };
+    const isHub = this.state.selected === 'empresarial' || this.state.selected === 'salud' || this.state.selected === 'ingenieria' || this.state.selected === 'vehicular';
+    const activeSub = isHub
+      ? (hubCatalog[this.state.selected].items[this.state.hubSub] || hubCatalog[this.state.selected].items[hubCatalog[this.state.selected].order[0]])
+      : null;
+
+    const menuBase = 'display:flex;align-items:center;gap:12px;width:100%;padding:11px 14px;border-radius:12px;border:none;text-align:left;font-weight:700;font-size:13.5px;font-family:inherit;transition:all .2s ease;';
+    const menuStyle = (key) => menuBase + (this.state.selected === key
+      ? 'background:var(--primary-soft);color:var(--primary);'
+      : 'background:transparent;color:var(--text);');
+    const menuIconBase = 'width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;flex-shrink:0;';
+    const menuIcon = (key) => menuIconBase + (this.state.selected === key
+      ? 'background:var(--primary);color:#fff;'
+      : 'background:var(--bg-alt);color:var(--primary);border:1px solid var(--border);');
+
+    const groupStyleBase = 'display:flex;align-items:center;gap:9px;padding:13px 24px;border-radius:999px;font-weight:800;font-size:14px;font-family:inherit;cursor:pointer;border:none;color:#fff;';
+    const groupGradients = {
+      familia: 'linear-gradient(135deg,#1F3FD6,#0FB9B1)',
+      empresa: 'linear-gradient(135deg,#16297A,#1F3FD6)',
+      sctr: 'linear-gradient(135deg,#0E9A93,#0FB9B1)'
+    };
+    const groupStyle = (key) => groupStyleBase + 'background:' + groupGradients[key] + ';transition:transform .2s ease,box-shadow .2s ease,opacity .2s ease;' + (this.state.seguroGroup === key
+      ? 'opacity:1;box-shadow:0 12px 26px rgba(9,14,29,.28);transform:scale(1.04);'
+      : 'opacity:.55;box-shadow:none;transform:scale(1);');
+
+    const sel = catalog[this.state.selected] || { label: 'Seguro', iconPath: '' };
+    const modalSource = isHub ? activeSub : sel;
+    const detailLine = this.state.prodDetail ? (' Detalle: ' + this.state.prodDetail + '.') : '';
+    const prodMsg = 'Hola Atenea Seguros, soy ' + (this.state.prodName || '[nombre]') +
+      '. Quiero cotizar un ' + modalSource.label + '.' + detailLine +
+      ' Mi WhatsApp es ' + (this.state.prodPhone || '[celular]') + '.';
+
+    const prodWaHref = this.waLink(prodMsg);
+    const prodFilled = [this.state.prodName, this.state.prodPhone, this.state.prodDetail].filter(Boolean).length;
+    const prodProgressPct = Math.round((prodFilled / 3) * 100);
+
+    const quickLabel = catalog[this.state.quickType].label;
+    const quickMsg = 'Hola Atenea Seguros, soy ' + (this.state.quickName || '[nombre]') +
+      ', DNI ' + (this.state.quickDni || '[DNI]') +
+      '. Quiero cotizar un ' + quickLabel + '. Mi WhatsApp es ' + (this.state.quickPhone || '[celular]') + '.';
+    const quickFilled = [this.state.quickName, this.state.quickDni, this.state.quickPhone].filter(Boolean).length;
+    const quickProgressPct = Math.round((quickFilled / 3) * 100);
+
+    return {
+      rootStyle: rootStyle,
+      logoInk: logoInk,
+      themeIconPath: themeIconPath,
+      toggleDark: () => this.setState({ dark: !this.state.dark }),
+
+      slides: slides,
+      heroPrev: () => this.setState({ slide: (this.state.slide + 2) % 3 }),
+      heroNext: () => this.setState({ slide: (this.state.slide + 1) % 3 }),
+
+      trustBadges: trustBadges,
+
+      heroWaHref: this.waLink('Hola Atenea Seguros, quiero cotizar un seguro. ¿Me ayudan a elegir la mejor opción?'),
+      navWaHref: this.waLink('Hola Atenea Seguros, quisiera más información sobre sus seguros.'),
+
+      quickType: this.state.quickType,
+      quickName: this.state.quickName,
+      quickDni: this.state.quickDni,
+      quickPhone: this.state.quickPhone,
+      handleQuickType: (e) => this.setState({ quickType: e.target.value }),
+      handleQuickName: (e) => this.setState({ quickName: e.target.value }),
+      handleQuickDni: (e) => this.setState({ quickDni: e.target.value }),
+      handleQuickPhone: (e) => this.setState({ quickPhone: e.target.value }),
+      quickWaHref: this.waLink(quickMsg),
+      quickProgressPct: quickProgressPct,
+      quickProgressLabel: quickFilled + '/3 completado',
+
+      digitalBadges: [
+        { label: 'Datos encriptados SSL', iconPath: 'M12 2 3 7v6c0 5 4 8.5 9 9 5-.5 9-4 9-9V7l-9-5Z' },
+        { label: 'Pago 100% seguro', iconPath: 'M3 10h18M6 15h4M3 6h18v12H3z' },
+        { label: 'Respaldo SBS verificado', iconPath: 'M9 12l2 2 4-4M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' }
+      ],
+
+      groupPicked: !!this.state.seguroGroup,
+      groupStyleFamilia: groupStyle('familia'),
+      groupStyleEmpresa: groupStyle('empresa'),
+      groupStyleSctr: groupStyle('sctr'),
+      selectGroupFamilia: () => this.setState({ seguroGroup: 'familia', selected: 'salud' }),
+      selectGroupEmpresa: () => this.setState({ seguroGroup: 'empresa', selected: 'empresarial' }),
+      selectGroupSctr: () => this.setState({ seguroGroup: 'sctr', selected: 'sctr' }),
+      showSalud: this.state.seguroGroup === 'familia',
+      showVehicular: this.state.seguroGroup === 'familia',
+      showHogar: this.state.seguroGroup === 'familia',
+      showViaje: this.state.seguroGroup === 'familia',
+      showEmpresarial: this.state.seguroGroup === 'empresa',
+      showIngenieria: this.state.seguroGroup === 'empresa',
+      showVidaley: this.state.seguroGroup === 'empresa',
+      showSctr: this.state.seguroGroup === 'sctr',
+
+      selectSalud: () => this.setState({ selected: 'salud' }),
+      selectVehicular: () => this.setState({ selected: 'vehicular' }),
+      selectHogar: () => this.setState({ selected: 'hogar' }),
+      selectViaje: () => this.setState({ selected: 'viaje' }),
+      selectEmpresarial: () => this.setState({ selected: 'empresarial' }),
+      selectIngenieria: () => this.setState({ selected: 'ingenieria' }),
+      selectSctr: () => this.setState({ selected: 'sctr' }),
+      selectVidaley: () => this.setState({ selected: 'vidaley' }),
+      menuStyleSalud: menuStyle('salud'),
+      menuStyleVehicular: menuStyle('vehicular'),
+      menuStyleHogar: menuStyle('hogar'),
+      menuStyleViaje: menuStyle('viaje'),
+      menuStyleEmpresarial: menuStyle('empresarial'),
+      menuStyleIngenieria: menuStyle('ingenieria'),
+      menuStyleSctr: menuStyle('sctr'),
+      menuStyleVidaley: menuStyle('vidaley'),
+      menuIconSalud: menuIcon('salud'),
+      menuIconVehicular: menuIcon('vehicular'),
+      menuIconHogar: menuIcon('hogar'),
+      menuIconViaje: menuIcon('viaje'),
+      menuIconEmpresarial: menuIcon('empresarial'),
+      menuIconIngenieria: menuIcon('ingenieria'),
+      menuIconSctr: menuIcon('sctr'),
+      menuIconVidaley: menuIcon('vidaley'),
+
+      cardsGridStyle: 'display:grid;grid-template-columns:repeat(' + (isHub ? hubCatalog[this.state.selected].order.length : 3) + ',1fr);gap:20px;',
+
+      selectedCards: isHub
+        ? hubCatalog[this.state.selected].order.map((key) => {
+            const it = hubCatalog[this.state.selected].items[key];
+            return {
+              title: it.cardTitle,
+              desc: it.cardDesc,
+              iconPath: '',
+              iconStroke: 'var(--primary)',
+              hasImage: true,
+              image: it.image,
+              cardStyle: 'background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;',
+              mediaStyle: 'height:110px;display:flex;align-items:center;justify-content:center;background:var(--bg-alt);overflow:hidden;box-sizing:border-box;border:2px solid transparent;border-image:linear-gradient(90deg,var(--primary),var(--accent)) 1;',
+              linkText: 'Cotizar >',
+              linkAction: () => this.setState({ hubSub: key, quoteOpen: true }),
+              linkStyle: 'display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:1.5px solid var(--primary);color:var(--primary);background:none;font-weight:800;font-size:14px;padding:12px;border-radius:999px;cursor:pointer;font-family:inherit;'
+            };
+          })
+        : sel.cards.map((c, i) => {
+            const isHero = i === 0;
+            return {
+              title: c.title,
+              desc: c.desc,
+              iconPath: sel.iconPath,
+              iconStroke: isHero ? '#ffffff' : 'var(--primary)',
+              hasImage: isHero,
+              image: sel.image,
+              cardStyle: 'background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;',
+              mediaStyle: 'height:110px;display:flex;align-items:center;justify-content:center;background:' + (isHero ? 'linear-gradient(135deg,var(--primary),var(--accent))' : 'var(--bg-alt)') + ';overflow:hidden;box-sizing:border-box;border:2px solid transparent;border-image:linear-gradient(90deg,var(--primary),var(--accent)) 1;',
+              linkText: isHero ? 'Cotizar >' : 'Ver más >',
+              linkAction: isHero
+                ? () => this.setState({ quoteOpen: true })
+                : () => this.setState({ infoOpen: true, infoTitle: c.title, infoDesc: c.desc }),
+              linkStyle: 'background:none;border:none;padding:0;cursor:pointer;font-family:inherit;font-weight:800;font-size:13px;' + (isHero ? 'color:var(--primary);' : 'color:var(--muted);')
+            };
+          }),
+
+      selectedLabelUpper: modalSource.label.toUpperCase(),
+      selectedHeadline: modalSource.headline,
+      selectedCopy: modalSource.copy,
+      selectedTags: modalSource.tags.map((t) => ({ text: t })),
+      selectedDetailLabel: modalSource.detailLabel,
+      selectedDetailPlaceholder: modalSource.detailPlaceholder,
+
+      prodName: this.state.prodName,
+      prodPhone: this.state.prodPhone,
+      prodDetail: this.state.prodDetail,
+      handleProdName: (e) => this.setState({ prodName: e.target.value }),
+      handleProdPhone: (e) => this.setState({ prodPhone: e.target.value }),
+      handleProdDetail: (e) => this.setState({ prodDetail: e.target.value }),
+      prodWaHref: prodWaHref,
+      prodProgressPct: prodProgressPct,
+      prodProgressLabel: prodFilled + '/3 completado',
+
+      quoteOpen: this.state.quoteOpen,
+      closeQuote: () => this.setState({ quoteOpen: false }),
+      infoOpen: this.state.infoOpen,
+      infoTitle: this.state.infoTitle,
+      infoDesc: this.state.infoDesc,
+      infoIconPath: sel.iconPath,
+      closeInfo: () => this.setState({ infoOpen: false }),
+      openQuoteFromInfo: () => this.setState({ infoOpen: false, quoteOpen: true }),
+      stopClick: (e) => e.stopPropagation(),
+
+      videoOpen: this.state.videoOpen,
+      videoTitle: this.state.videoTitle,
+      videoDesc: this.state.videoDesc,
+      videoTag: this.state.videoTag,
+      videoDuration: this.state.videoDuration,
+      videoGradient: this.state.videoGradient,
+      videoYoutubeUrl: this.state.videoYoutubeUrl,
+      closeVideo: () => this.setState({ videoOpen: false }),
+      videos: [
+        { title: '¿Qué es un seguro?', tag: 'Fundamentos', duration: '2 min', desc: 'Te explicamos en simple qué es un seguro, cómo funciona y por qué te conviene tener uno.', gradient: 'linear-gradient(150deg,#1F3FD6,#111C5E)' },
+        { title: '¿Sabes qué es el SOAT?', tag: 'Vehicular', duration: '3 min', desc: 'Todo lo que necesitas saber sobre el SOAT: qué cubre, cómo obtenerlo y qué pasa si no lo tienes.', gradient: 'linear-gradient(150deg,#0FB9B1,#0A6E68)', youtubeId: 'SXBnauTvpLw', thumb: '/_blob/bc9b0333b7704a0b7220a16ffc68f4f1' },
+        { title: '¿Cómo proteger mi negocio?', tag: 'Empresarial', duration: '4 min', desc: 'Conoce los seguros clave para blindar tu negocio ante imprevistos y seguir creciendo sin sobresaltos.', gradient: 'linear-gradient(150deg,#16297A,#0A1240)' },
+        { title: '¿Cómo debo proteger mi salud y la de mis trabajadores?', tag: 'Salud y SCTR', duration: '3 min', desc: 'Diferencias entre EPS, seguro de salud particular y SCTR, y cuál conviene según tu situación.', gradient: 'linear-gradient(150deg,#0E9A93,#0A1240)' }
+      ].map((v) => {
+        const bg = v.thumb
+          ? "url('" + v.thumb + "') center/cover no-repeat"
+          : v.youtubeId
+            ? "url('https://img.youtube.com/vi/" + v.youtubeId + "/hqdefault.jpg') center/cover no-repeat"
+            : v.gradient;
+        const youtubeUrl = v.youtubeId ? 'https://www.youtube.com/watch?v=' + v.youtubeId : '#';
+        return {
+          ...v,
+          bg: bg,
+          open: () => this.setState({ videoOpen: true, videoTitle: v.title, videoDesc: v.desc, videoTag: v.tag, videoDuration: v.duration, videoGradient: bg, videoYoutubeUrl: youtubeUrl })
+        };
+      }),
+
+      values: [
+        { title: 'Transparencia', desc: 'Comparamos entre aseguradoras y te explicamos todo, sin letra pequeña.', iconPath: 'M9 12l2 2 4-4M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' },
+        { title: 'Respaldo', desc: 'Trabajamos solo con aseguradoras supervisadas por la SBS.', iconPath: 'M12 2 3 7v6c0 5 4 8.5 9 9 5-.5 9-4 9-9V7l-9-5Z' },
+        { title: 'Cercanía', desc: 'Asesoría humana antes, durante y después del siniestro.', iconPath: 'M20.8 8.6c0 4.4-4.4 7.6-8.8 11.4C7.6 16.2 3.2 13 3.2 8.6a4.6 4.6 0 0 1 8.8-1.8 4.6 4.6 0 0 1 8.8 1.8Z' }
+      ],
+
+      stats: [
+        { value: '15+', label: 'Años de experiencia' },
+        { value: '20+', label: 'Aseguradoras aliadas' },
+        { value: '8,000+', label: 'Familias protegidas' },
+        { value: '4.9/5', label: 'Satisfacción de clientes' }
+      ],
+
+      insurersLoop: (() => {
+        const base = [
+          { name: 'Aseguradora Aliada 1' },
+          { name: 'Aseguradora Aliada 2' },
+          { name: 'Aseguradora Aliada 3' },
+          { name: 'Aseguradora Aliada 4' },
+          { name: 'Aseguradora Aliada 5' }
+        ];
+        return base.concat(base);
+      })(),
+
+      gallery: [
+        { title: 'Familia protegida', caption: 'Seguro de Vida', gradient: 'linear-gradient(150deg,#1F3FD6,#111C5E)' },
+        { title: 'Negocio en marcha', caption: 'Seguro Empresarial', gradient: 'linear-gradient(150deg,#0FB9B1,#0A6E68)' },
+        { title: 'Viaje sin preocupaciones', caption: 'Seguro de Viaje', gradient: 'linear-gradient(150deg,#16297A,#0A1240)' },
+        { title: 'Hogar resguardado', caption: 'Seguro de Hogar', gradient: 'linear-gradient(150deg,#0E9A93,#0A1240)' },
+        { title: 'Movilidad tranquila', caption: 'Seguro Vehicular', gradient: 'linear-gradient(150deg,#1F3FD6,#0E9A93)' },
+        { title: 'Salud al día', caption: 'Seguro de Salud', gradient: 'linear-gradient(150deg,#111C5E,#0FB9B1)' }
+      ],
+
+      testimonials: [
+        { quote: 'Cuando choqué el auto, Atenea gestionó todo el siniestro por mí. En 48 horas tenía el taller confirmado.', name: 'Renzo A.', city: 'Lima', initials: 'RA', stars: [1, 2, 3, 4, 5] },
+        { quote: 'Me explicaron cada cláusula del seguro de vida sin apuro y sin tecnicismos. Se nota la diferencia.', name: 'Carla M.', city: 'Arequipa', initials: 'CM', stars: [1, 2, 3, 4, 5] },
+        { quote: 'Aseguré mi taller textil y hoy duermo tranquila sabiendo que está protegido ante cualquier imprevisto.', name: 'Doris Q.', city: 'Cusco', initials: 'DQ', stars: [1, 2, 3, 4, 5] },
+        { quote: 'La cotización por WhatsApp fue rapidísima, en minutos tenía mi seguro vehicular activo.', name: 'Jorge T.', city: 'Trujillo', initials: 'JT', stars: [1, 2, 3, 4, 5] }
+      ],
+
+      faqs: (() => {
+        const raw = [
+          { q: '¿Qué es un corredor de seguros y en qué se diferencia de una aseguradora?', a: 'Un corredor de seguros es un intermediario independiente que te representa a ti, no a una aseguradora en particular. Comparamos entre varias compañías para encontrar la cobertura que mejor se ajusta a tus necesidades y presupuesto.' },
+          { q: '¿Cuánto cuesta la asesoría de Atenea Seguros?', a: 'Nuestra asesoría no tiene costo adicional para ti. Nuestra comisión es pagada por la aseguradora, por lo que pagas exactamente lo mismo que si contrataras directamente, pero con nuestro respaldo y gestión incluidos.' },
+          { q: '¿Cómo cotizo un seguro?', a: 'Puedes escribirnos por WhatsApp, completar el cotizador rápido en esta página o dejarnos tus datos en el formulario de contacto. Te responderemos con opciones personalizadas en menos de una hora hábil.' },
+          { q: '¿Con qué aseguradoras trabajan?', a: 'Trabajamos con las principales aseguradoras del mercado peruano, todas supervisadas por la Superintendencia de Banca, Seguros y AFP (SBS), lo que garantiza el respaldo de tu póliza.' },
+          { q: '¿Qué pasa si tengo un siniestro?', a: 'Te acompañamos durante todo el proceso: desde la denuncia hasta el seguimiento con la aseguradora, para que la gestión sea rápida y sin complicaciones para ti.' },
+          { q: '¿Puedo cambiarme de seguro si ya tengo uno vigente?', a: 'Sí. Analizamos tu póliza actual sin costo y te mostramos si existe una opción más conveniente en cobertura o precio antes de tu próxima renovación.' }
+        ];
+        return raw.map((f, i) => {
+          const isOpen = this.state.openFaq === i;
+          return {
+            q: f.q,
+            a: f.a,
+            chevStyle: 'transform:rotate(' + (isOpen ? 180 : 0) + 'deg);transition:transform .25s ease;',
+            answerStyle: 'max-height:' + (isOpen ? '300px' : '0px') + ';opacity:' + (isOpen ? 1 : 0) + ';overflow:hidden;transition:max-height .3s ease,opacity .25s ease;',
+            toggle: () => this.setState({ openFaq: isOpen ? -1 : i })
+          };
+        });
+      })()
+    };
+  }
+}
+</script>
+</body>
+</html>
