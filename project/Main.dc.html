@@ -236,6 +236,7 @@
     <div style="display:grid;grid-template-columns:220px 1fr;gap:36px;align-items:start;margin-bottom:44px">
 
       <div style="display:flex;flex-direction:column;gap:4px;position:sticky;top:96px">
+        <div style="position:absolute;left:0;top:4px;bottom:4px;width:2px;border-radius:999px;background:var(--border);pointer-events:none"></div>
         <sc-if value="{{showSalud}}" hint-placeholder-val="{{true}}">
         <button onClick="{{selectSalud}}" style="{{menuStyleSalud}}">
           <span style="{{menuIconSalud}}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"></circle><path d="M12 7.5v9M7.5 12h9"></path></svg></span>
@@ -1000,9 +1001,9 @@ class Component extends DCLogic {
       ? (hubCatalog[this.state.selected].items[this.state.hubSub] || hubCatalog[this.state.selected].items[hubCatalog[this.state.selected].order[0]])
       : null;
 
-    const menuBase = 'display:flex;align-items:center;gap:12px;width:100%;padding:11px 14px;border-radius:12px;border:none;text-align:left;font-weight:700;font-size:13.5px;font-family:inherit;transition:all .2s ease;';
+    const menuBase = "display:flex;align-items:center;gap:12px;width:100%;padding:11px 14px 11px 11px;border-radius:0 12px 12px 0;border:none;border-left:3px solid transparent;text-align:left;font-weight:700;font-size:13.5px;font-family:inherit;transition:all .2s ease;";
     const menuStyle = (key) => menuBase + (this.state.selected === key
-      ? 'background:var(--primary-soft);color:var(--primary);'
+      ? 'background:var(--primary-soft);color:var(--primary);border-left-color:var(--primary);'
       : 'background:transparent;color:var(--text);');
     const menuIconBase = 'width:32px;height:32px;border-radius:999px;display:flex;align-items:center;justify-content:center;flex-shrink:0;';
     const menuIcon = (key) => menuIconBase + (this.state.selected === key
@@ -1124,7 +1125,7 @@ class Component extends DCLogic {
               hasImage: true,
               image: it.image,
               cardStyle: 'background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;',
-              mediaStyle: 'height:110px;display:flex;align-items:center;justify-content:center;background:var(--bg-alt);overflow:hidden;box-sizing:border-box;border:2px solid transparent;border-image:linear-gradient(90deg,var(--primary),var(--accent)) 1;',
+              mediaStyle: 'height:160px;display:flex;align-items:center;justify-content:center;background:var(--bg-alt);overflow:hidden;box-sizing:border-box;border:2px solid transparent;border-image:linear-gradient(90deg,var(--primary),var(--accent)) 1;',
               linkText: 'Cotizar >',
               linkAction: () => this.setState({ hubSub: key, quoteOpen: true }),
               linkStyle: 'display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:1.5px solid var(--primary);color:var(--primary);background:none;font-weight:800;font-size:14px;padding:12px;border-radius:999px;cursor:pointer;font-family:inherit;'
@@ -1140,7 +1141,7 @@ class Component extends DCLogic {
               hasImage: isHero,
               image: sel.image,
               cardStyle: 'background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;',
-              mediaStyle: 'height:110px;display:flex;align-items:center;justify-content:center;background:' + (isHero ? 'linear-gradient(135deg,var(--primary),var(--accent))' : 'var(--bg-alt)') + ';overflow:hidden;box-sizing:border-box;border:2px solid transparent;border-image:linear-gradient(90deg,var(--primary),var(--accent)) 1;',
+              mediaStyle: 'height:160px;display:flex;align-items:center;justify-content:center;background:' + (isHero ? 'linear-gradient(135deg,var(--primary),var(--accent))' : 'var(--bg-alt)') + ';overflow:hidden;box-sizing:border-box;border:2px solid transparent;border-image:linear-gradient(90deg,var(--primary),var(--accent)) 1;',
               linkText: isHero ? 'Cotizar >' : 'Ver más >',
               linkAction: isHero
                 ? () => this.setState({ quoteOpen: true })
